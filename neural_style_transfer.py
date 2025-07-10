@@ -103,7 +103,7 @@ content_extractor = vgg_layers(content_layers)
 style_weight=1e-2
 content_weight=1e4
 
-# 【修正後的損失函數】
+# 修正後的損失函數
 def style_content_loss(style_outputs_grams, content_outputs, style_targets, content_targets):
     # 手動展開風格損失的計算 (style_layers 有 5 層)
     style_loss = (tf.reduce_mean((style_outputs_grams[0] - style_targets[0])**2) +
@@ -138,7 +138,7 @@ image = tf.Variable(content_image)
 # 定義優化器
 optimizer = tf.optimizers.Adam(learning_rate=0.02, beta_1=0.99, epsilon=1e-1)
 
-# 【恢復成最簡單的 @tf.function 版本】
+# 恢復成最簡單的 @tf.function 版本
 @tf.function()
 def train_step(image):
     with tf.GradientTape() as tape:
@@ -153,7 +153,7 @@ def train_step(image):
     optimizer.apply_gradients([(grad, image)])
     image.assign(tf.clip_by_value(image, clip_value_min=0.0, clip_value_max=1.0))
 
-print("✅ 訓練前置作業準備完成！")
+print("前置作業完成")
 
 # ==================================
 # 6. 開始進行風格轉換！
@@ -161,7 +161,7 @@ print("✅ 訓練前置作業準備完成！")
 epochs = 5
 steps_per_epoch = 50
 
-print("\n🚀 開始進行風格轉換，這個過程會需要幾分鐘，請稍候...")
+print("\n開始進行風格轉換 請稍候...")
 
 # 執行主迴圈
 for n in range(epochs):
@@ -176,13 +176,13 @@ for n in range(epochs):
     plt.axis('off')
     plt.show()
 
-print("✅ 風格轉換完成！")
+print("風格轉換完成！")
 
 # 顯示並儲存最終成果
 final_image = tensor_to_image(image)
 final_image.save('final_stylized_image.png')
 
-print("\n🎉 最終成果：")
+print("\n最終成果：")
 plt.figure(figsize=(10,10))
 plt.imshow(final_image)
 plt.title('Final Stylized Image')
